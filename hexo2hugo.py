@@ -129,6 +129,21 @@ class Hexo2Hugo(object):
                     meta['categories'] = meta['categories'].split(',')
 
                 meta_toml = toml.dumps(meta)
+
+                body = re.sub(r'{% fold "?(.*?)(?:：|:)"? %}', r'{{% admonition note "\1" true %}}', body)
+                body = re.sub(r'{% fold "?(.*?)"? %}', r'{{% admonition note "\1" true %}}', body)
+                body = re.sub(r'{% endfold %}', r'{{% /admonition %}}', body)
+                body = re.sub(r'{% asset_img (.*?)\.(.*?) %}', r'![\1](/post_img/' + hexo_file[:-3] + r'/\1.\2)', body)
+
+                p = 0
+                while True:
+                    p = body.find('{%', p + 1)
+                    if (p == -1):
+                        break
+                    if body[p - 1] != '{':
+                        print(hexo_file)
+                        break
+
                 yield({'name': hexo_file, 'meta': meta_toml, 'body': body})
 
 
