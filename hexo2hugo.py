@@ -119,8 +119,14 @@ class Hexo2Hugo(object):
                 if 'layout' in meta:
                     del meta['layout']
 
+                if 'top' in meta:
+                    del meta['top']
+
                 if 'tags' in meta and type(meta['tags']) == str:
                     meta['tags'] = meta['tags'].split(',')
+
+                if 'categories' in meta and type(meta['categories']) == str:
+                    meta['categories'] = meta['categories'].split(',')
 
                 meta_toml = toml.dumps(meta)
                 yield({'name': hexo_file, 'meta': meta_toml, 'body': body})
