@@ -120,6 +120,8 @@ class Hexo2Hugo(object):
                     del meta['layout']
 
                 if 'top' in meta:
+                    if type(meta['top']) == int:
+                        meta['weight'] = 100 - meta['top']
                     del meta['top']
 
                 if 'tags' in meta and type(meta['tags']) == str:
@@ -127,6 +129,8 @@ class Hexo2Hugo(object):
 
                 if 'categories' in meta and type(meta['categories']) == str:
                     meta['categories'] = meta['categories'].split(',')
+
+                meta['aliases'] = ['/post/' + hexo_file[:-3], '/' + hexo_file[:-3]]
 
                 meta_toml = toml.dumps(meta)
 
